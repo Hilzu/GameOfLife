@@ -2,8 +2,30 @@ package gameoflife
 
 import java.util.LinkedList
 import java.util.Random
+import java.util.ArrayList
 
 class State(val height: Int, val width: Int) {
+    class object {
+        private val reaktorString: String = "-------------------------------------------------------------------------------------------------------------------------------------------------------------------\n-xxxxxxxxxxxxxxxxxx-------------------------------------------------------------xxxxxxxx-----------------xxxxxxxx--------------------------------------------------\n-xxxxxxxxxxxxxxxxxxxxxx--------------------------------------------------------xxxxxxxxx----------------xxxxxxxxx--------------------------------------------------\n-xxxxxxxxxxxxxxxxxxxxxxx-------------------------------------------------------xxxxxxxxx----------------xxxxxxxxx--------------------------------------------------\n-xxxxxxxxxxxxxxxxxxxxxxxx------------------------------------------------------xxxxxxxxx----------------xxxxxxxxx--------------------------------------------------\n-xxxxxxxxxxxxxxxxxxxxxxxx------------------------------------------------------xxxxxxxxx----------------xxxxxxxxx--------------------------------------------------\n-xxxxxxxxxxxxxxxxxxxxxxxxx--------xxxxxxxxxxx---------xxxxxxxxxxxxxxxx---------xxxxxxxxx-------xxxxxxx--xxxxxxxxxxxxxxx---------xxxxxxxxxxxx---------xxxxxx------xx\n-xxxxxxxxxxxxxxxxxxxxxxxxx------xxxxxxxxxxxxxxxx------xxxxxxxxxxxxxxxxxx-------xxxxxxxxx------xxxxxxxx--xxxxxxxxxxxxxxxx------xxxxxxxxxxxxxxxx-------xxxxxxx---xxxx\n-xxxxxxxxx-------xxxxxxxxx----xxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxx------xxxxxxxxx-----xxxxxxxx---xxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxx------xxxxxxxxxxxxxx\n-xxxxxxxxx-------xxxxxxxx----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx----xxxxxxxx----xxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxx\n-xxxxxxxxx-------xxxxxxxx----xxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx----xxxxxxx-----xxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxx\n-xxxxxxxxx------xxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx---xxxxxxxx-----xxxxxxxxxxxxxxxx--xxxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxx\n-xxxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxx-----xxxxxxxx---------------xxxxxxxxx-----xxxxxxxxx--xxxxxxxx------xxxxxxxxx---------xxxxxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxx\n-xxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxxxxx---------------xxxxxxxxx-----xxxxxxxxx-xxxxxxxx-------xxxxxxxxx--------xxxxxxxxxx------xxxxxxxxx---xxxxxxxxxxxx--\n-xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxxxxx------xxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxx-------xxxxxxxxx--------xxxxxxxxx-------xxxxxxxxx---xxxxxxxxx-----\n-xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxx------xxxxxxxxx--------xxxxxxxxx-------xxxxxxxxx---xxxxxxxxx-----\n-xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx--------xxxxxxxxx-------xxxxxxxxx---xxxxxxxxx-----\n-xxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx--------xxxxxxxxxx------xxxxxxxxx---xxxxxxxxx-----\n-xxxxxxxxx----xxxxxxxxx----xxxxxxxxxx----------------xxxxxxxxx---xxxxxxxxx-----xxxxxxxxxxxxxxxxxxxxx----xxxxxxxxx--------xxxxxxxxxx-----xxxxxxxxxx---xxxxxxxxx-----\n-xxxxxxxxx-----xxxxxxxxx----xxxxxxxxxxxxxxxxxxxxxx--xxxxxxxxx----xxxxxxxxx-----xxxxxxxxxxxxxxxxxxxxx----xxxxxxxxxx--------xxxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxx-----\n-xxxxxxxxx-----xxxxxxxxx----xxxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxxxx--xxxxxxxxxxx--xxxxxxxxx---xxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxxx----xxxxxxxxx-----\n-xxxxxxxxx------xxxxxxxxx----xxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxxxx--xxxxxxxxxx---xxxxxxxxx----xxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxx-----xxxxxxxxx-----\n-xxxxxxxxx------xxxxxxxxx----xxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxxxx--xxxxxxxxx-----xxxxxxxxx---xxxxxxxxxxxxxxx----xxxxxxxxxxxxxxxxxxx------xxxxxxxxx-----\n-xxxxxxxxx-------xxxxxxxxx----xxxxxxxxxxxxxxxxxxxxx---xxxxxxxxxxxxxxxxxxxxxxx--xxxxxxxx------xxxxxxxxx----xxxxxxxxxxxxxx-----xxxxxxxxxxxxxxxxx-------xxxxxxxxx-----\n-xxxxxxxxx-------xxxxxxxxx------xxxxxxxxxxxxxxxxx------xxxxxxxxxx--xxxxxxxxxx--xxxxxxx--------xxxxxxxxx----xxxxxxxxxxxx-------xxxxxxxxxxxxxx---------xxxxxxxxx-----\n------------------------------------xxxxxxxxx------------xxxxxx------xxxxx--------------------xxxxxxxxx------xxxxxxx--------------xxxxxxx--------------------------\n-----------------------------------------------------------------------------------------------xxxxxxxxx-----------------------------------------------------------\n-----------------------------------------------------------------------------------------------xxxxxxxxx-----------------------------------------------------------\n------------------------------------------------------------------------------------------------xxxxxxxxx----------------------------------------------------------\n-------------------------------------------------------------------------------------------------xxxxxxxx----------------------------------------------------------"
+
+        fun createRowFromString(str: String): Array<Boolean> {
+            val row = ArrayList<Boolean>()
+            for (char in str) {
+                if (char == 'x') row.add(true)
+                else row.add(false)
+            }
+            return Array<Boolean>(row.size(), { row.get(it) })
+        }
+
+        fun reaktorState(): State {
+            val lines = reaktorString.split('\n')
+            val state = State(lines.size, lines[0].size)
+            for (lineIdx in lines.indices) {
+                state.aliveGrid[lineIdx] = createRowFromString(lines[lineIdx])
+            }
+            return state
+        }
+    }
 
     val aliveGrid = Array<Array<Boolean>>(height, {
         Array<Boolean>(width, { false })
@@ -71,6 +93,7 @@ class State(val height: Int, val width: Int) {
 
     fun stateAfterInteraction(): State {
         val newState = State(height, width)
+
         for (row in aliveGrid.indices) {
             for (col in aliveGrid[row].indices) {
                 newState.aliveGrid[row][col] = aliveAfterInteraction(row, col)

@@ -7,8 +7,8 @@ import java.awt.Color
 class CellPanel: JPanel() {
     var cells: Array<Array<Boolean>> = array()
     val aliveColor = Color.BLACK
-    val deadColor = Color.WHITE
-    val cellSize = 10
+    val deadColor = Color.LIGHT_GRAY
+    val cellSize = 5
 
     fun updateCells(cells: Array<Array<Boolean>>) {
         this.cells = cells
@@ -21,7 +21,7 @@ class CellPanel: JPanel() {
                 val alive = cells[row][col]
                 if (alive) {
                     g.setColor(aliveColor)
-                }  else {
+                } else {
                     g.setColor(deadColor)
                 }
                 g.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)

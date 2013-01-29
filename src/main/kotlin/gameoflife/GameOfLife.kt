@@ -5,16 +5,21 @@ import java.awt.event.ActionListener
 import java.awt.event.ActionEvent
 
 class GameOfLife : ActionListener {
-    val cols = 100
-    val rows = 60
-    val ui = UI()
+    val ui = UI(this)
     val timer = Timer(500, this)
-    var state = State(rows, cols)
+    var state = State.reaktorState()
 
-    fun start() {
-        ui.createWindow(rows, cols)
-        state.randomize()
-        timer.start()
+    fun create() {
+        ui.createWindow(state.height, state.width)
+        ui.update(state.aliveGrid)
+    }
+
+    fun play() {
+        timer.restart()
+    }
+
+    fun pause() {
+        timer.stop()
     }
 
     public override fun actionPerformed(e: ActionEvent) {
@@ -24,7 +29,7 @@ class GameOfLife : ActionListener {
     }
 }
 
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
     val game = GameOfLife()
-    game.start()
+    game.create()
 }
