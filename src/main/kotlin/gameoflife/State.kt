@@ -18,11 +18,7 @@ class State(val height: Int, val width: Int) {
         }
     }
 
-    fun isValidCell(row: Int, col: Int) =
-            if (row < 0 || col < 0 || row >= height || col >= width)
-                false
-            else
-                true
+    fun isValidCell(row: Int, col: Int) = !(row < 0 || col < 0 || row >= height || col >= width)
 
     fun oneIfCellIsAlive(row: Int, col: Int): Int {
         if (isValidCell(row, col)) {
