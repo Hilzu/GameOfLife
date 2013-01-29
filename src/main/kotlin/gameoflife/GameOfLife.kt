@@ -18,7 +18,7 @@ class GameOfLife : ActionListener {
     }
 
     public override fun actionPerformed(e: ActionEvent) {
-        state = state.simulate()
+        state = state.stateAfterInteraction()
         ui.update(state.aliveGrid)
         timer.restart()
     }

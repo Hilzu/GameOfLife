@@ -24,39 +24,37 @@ class State(val height: Int, val width: Int) {
             else
                 true
 
-    fun getNeighbours(row: Int, col: Int): List<Boolean> {
-        val neighboursList = LinkedList<Boolean>()
-        // Left
-        neighboursList.add(if (isValidCell(row - 1, col)) aliveGrid[row - 1][col] else false)
-        // Upper Left
-        neighboursList.add(if (isValidCell(row - 1, col - 1)) aliveGrid[row - 1][col - 1] else false)
-        // Up
-        neighboursList.add(if (isValidCell(row, col - 1)) aliveGrid[row][col - 1] else false)
-        // Upper Right
-        neighboursList.add(if (isValidCell(row - 1, col + 1)) aliveGrid[row - 1][col + 1] else false)
-        // Right
-        neighboursList.add(if (isValidCell(row, col + 1)) aliveGrid[row][col + 1] else false)
-        // Lower Right
-        neighboursList.add(if (isValidCell(row + 1, col + 1)) aliveGrid[row + 1][col + 1] else false)
-        // Down
-        neighboursList.add(if (isValidCell(row + 1, col)) aliveGrid[row + 1][col] else false)
-        // Lower Left
-        neighboursList.add(if (isValidCell(row + 1, col - 1)) aliveGrid[row + 1][col - 1] else false)
-
-        return neighboursList
+    fun oneIfCellIsAlive(row: Int, col: Int): Int {
+        if (isValidCell(row, col)) {
+            val alive = aliveGrid[row][col]
+            if (alive) return 1
+            else return 0
+        } else return 0
     }
 
-    fun aliveNeighbours(row: Int, col: Int): Int {
-        val neighbours = getNeighbours(row, col)
+    fun aliveNeighboursAmount(row: Int, col: Int): Int {
         var aliveAmount = 0
-        for (neighbour in neighbours) {
-            if (neighbour) aliveAmount++
-        }
+        // Left
+        aliveAmount += oneIfCellIsAlive(row - 1, col)
+        // Upper-Left
+        aliveAmount += oneIfCellIsAlive(row - 1, col - 1)
+        // Up
+        aliveAmount += oneIfCellIsAlive(row, col - 1)
+        // Upper-Right
+        aliveAmount += oneIfCellIsAlive(row - 1, col + 1)
+        // Right
+        aliveAmount += oneIfCellIsAlive(row, col + 1)
+        // Lower-Right
+        aliveAmount += oneIfCellIsAlive(row + 1, col + 1)
+        // Down
+        aliveAmount += oneIfCellIsAlive(row + 1, col)
+        // Lower-Left
+        aliveAmount += oneIfCellIsAlive(row + 1, col - 1)
         return aliveAmount
     }
 
-    fun interact(row: Int, col: Int): Boolean {
-        val aliveNeighbours = aliveNeighbours(row, col)
+    fun aliveAfterInteraction(row: Int, col: Int): Boolean {
+        val aliveNeighbours = aliveNeighboursAmount(row, col)
         val alive = aliveGrid[row][col]
         if (alive) {
             if (aliveNeighbours < 2) {
@@ -75,11 +73,11 @@ class State(val height: Int, val width: Int) {
         }
     }
 
-    fun simulate(): State {
+    fun stateAfterInteraction(): State {
         val newState = State(height, width)
         for (row in aliveGrid.indices) {
             for (col in aliveGrid[row].indices) {
-                newState.aliveGrid[row][col] = interact(row, col)
+                newState.aliveGrid[row][col] = aliveAfterInteraction(row, col)
             }
         }
         return newState

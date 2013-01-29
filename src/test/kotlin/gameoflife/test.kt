@@ -61,47 +61,47 @@ class TestSuite {
     }
 
     Test fun interactTest1() {
-        assertTrue(testState.interact(0, 0))
+        assertTrue(testState.aliveAfterInteraction(0, 0))
     }
 
     Test fun interactTest2() {
-        assertTrue(testState.interact(0, 1))
+        assertTrue(testState.aliveAfterInteraction(0, 1))
     }
 
     Test fun interactTest3() {
-        assertTrue(testState.interact(1, 0))
+        assertTrue(testState.aliveAfterInteraction(1, 0))
     }
 
     Test fun interactTest4() {
-        assertTrue(testState.interact(1, 1))
+        assertTrue(testState.aliveAfterInteraction(1, 1))
     }
 
     Test fun interactTest5() {
-        assertFalse(testState.interact(0, 2))
+        assertFalse(testState.aliveAfterInteraction(0, 2))
     }
 
     Test fun interactTest6() {
-        assertFalse(testState.interact(0, 9))
+        assertFalse(testState.aliveAfterInteraction(0, 9))
     }
 
     Test fun interactTest7() {
-        assertFalse(testState.interact(9, 1))
+        assertFalse(testState.aliveAfterInteraction(9, 1))
     }
 
     Test fun aliveNeighboursTest1() {
-        assertEquals(2, testState.aliveNeighbours(0, 0));
+        assertEquals(2, testState.aliveNeighboursAmount(0, 0));
     }
 
     Test fun aliveNeighboursTest2() {
-        assertEquals(4, testState.aliveNeighbours(8, 1));
+        assertEquals(4, testState.aliveNeighboursAmount(8, 1));
     }
 
     Test fun aliveNeighboursTest3() {
-        assertEquals(0, testState.aliveNeighbours(4, 4));
+        assertEquals(0, testState.aliveNeighboursAmount(4, 4));
     }
 
     Test fun aliveNeighboursTest4() {
-        assertEquals(4, testState.aliveNeighbours(9, 1));
+        assertEquals(4, testState.aliveNeighboursAmount(9, 1));
     }
 
 }
